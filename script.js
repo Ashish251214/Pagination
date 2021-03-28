@@ -6,7 +6,6 @@ async function getData(page,countRows){
     await fetch(url).then(res =>{
         return res.json();
     }).then(data =>{
-        console.log(data);
         let mainData = data.data;
         let rows;
         let valueArray = [];
@@ -50,7 +49,7 @@ async function getData(page,countRows){
         pagiBtn[e].addEventListener("click", () => {
             if(e == 0){
                 if(checkFirstPage == 1){
-                    alert("You'r already on first page");
+                    console.log("You'r already on first page");
                     pagiBtn[e].setAttribute("disabled","true");
                 }else{
                     var deleteDynamicData = document.getElementsByClassName("dynamicData");
@@ -60,9 +59,21 @@ async function getData(page,countRows){
                     getData(1,20);
                 }
             }
+            if(e == 1){
+                if(checkFirstPage == 1){
+                    console.log("You'r already on first page");
+                }else{
+                    var deleteDynamicData = document.getElementsByClassName("dynamicData");
+                    for(var g=0;g<deleteDynamicData.length;g++){
+                        deleteDynamicData[g].innerHTML = "";
+                    }
+                    let prevBtn = checkFirstPage-1;
+                    getData(`${prevBtn}`,20);
+                }
+            }
             if(e == 6){
                 if(checkFirstPage == 247){
-                    alert("You'r already on Last page");
+                    console.log("You'r already on Last page");
                     pagiBtn[e].setAttribute("disabled","true");
                 }else{
                     var deleteDynamicData = document.getElementsByClassName("dynamicData");
