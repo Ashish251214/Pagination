@@ -1,8 +1,9 @@
-let page,countRows;
+let page,countRows,checkFirstPage;
 let table = document.querySelector(".table");
 // function to get & manage data
 async function getData(page,countRows){
     const url = `https://api.instantwebtools.net/v1/passenger?page=${page}&size=${countRows}`;
+    checkFirstPage = page;
     await fetch(url).then(res =>{
         return res.json();
     }).then(data =>{
@@ -42,48 +43,70 @@ async function getData(page,countRows){
     }).catch(err =>{
         throw("Error: ",err);
     });
-    let checkFirstPage = page;
-    // Pagination working
-    let pagiBtn = document.getElementsByClassName("pagiBtn");
-    for(let e=0;e<pagiBtn.length;e++){
-        pagiBtn[e].addEventListener("click", () => {
-            if(e == 0){
-                if(checkFirstPage == 1){
-                    console.log("You'r already on first page");
-                    pagiBtn[e].setAttribute("disabled","true");
-                }else{
-                    var deleteDynamicData = document.getElementsByClassName("dynamicData");
-                    for(var g=0;g<deleteDynamicData.length;g++){
-                        deleteDynamicData[g].innerHTML = "";
-                    }
-                    getData(1,20);
-                }
-            }
-            if(e == 1){
-                if(checkFirstPage == 1){
-                    console.log("You'r already on first page");
-                }else{
-                    var deleteDynamicData = document.getElementsByClassName("dynamicData");
-                    for(var g=0;g<deleteDynamicData.length;g++){
-                        deleteDynamicData[g].innerHTML = "";
-                    }
-                    let prevBtn = checkFirstPage-1;
-                    getData(`${prevBtn}`,20);
-                }
-            }
-            if(e == 6){
-                if(checkFirstPage == 247){
-                    console.log("You'r already on Last page");
-                    pagiBtn[e].setAttribute("disabled","true");
-                }else{
-                    var deleteDynamicData = document.getElementsByClassName("dynamicData");
-                    for(var g=0;g<deleteDynamicData.length;g++){
-                        deleteDynamicData[g].innerHTML = "";
-                    }
-                    getData(247,19);
-                }
-            }
-        });
-    }
 }
 getData(1,20);
+// pagination working of all button
+    // Pagination working
+    let firstBtn = document.querySelector("#firstBtn");
+    let previousBtn = document.querySelector("#previousBtn");
+    let numberBtn = document.getElementsByClassName("numberBtn");
+    let nextBtn = document.querySelector("#nextBtn");
+    let lastBtn = document.querySelector("#lastBtn");
+    // first Button
+    firstBtn.addEventListener('click', () => {
+        if(checkFirstPage == 1){
+            console.log("You'r already on first page");
+            firstBtn.setAttribute("disabled","true");
+        }else{
+            var deleteDynamicData = document.getElementsByClassName("dynamicData");
+            for(var g=0;g<deleteDynamicData.length;g++){
+                deleteDynamicData[g].innerHTML = "";
+            }
+            getData(1,20);
+        }
+    });
+    // previousBtn 
+    previousBtn.addEventListener("click", () => {
+        if(checkFirstPage == 1){
+            console.log("You'r already on first page");
+        }else{
+            var deleteDynamicData = document.getElementsByClassName("dynamicData");
+            for(var g=0;g<deleteDynamicData.length;g++){
+                deleteDynamicData[g].innerHTML = "";
+            }
+            let prevBtn = checkFirstPage-1;
+            getData(`${prevBtn}`,20);
+        }
+    });
+    // nextBtn
+    nextBtn.addEventListener("click", () => {
+        if(checkFirstPage == 247){
+            console.log("You'r already on last page");
+        }else{
+            console.log(checkFirstPage);
+            var deleteDynamicData = document.getElementsByClassName("dynamicData");
+            for(var g=0;g<deleteDynamicData.length;g++){
+                deleteDynamicData[g].innerHTML = "";
+            }
+            let prevBtn = parseInt(checkFirstPage) + parseInt(1);
+            console.log(prevBtn , "Increment");
+            if(checkFirstPage == 246){
+                getData(`${prevBtn}`,19);
+            }else{
+                getData(`${prevBtn}`,20);
+            }
+        }
+    });
+    // lastBtn
+    lastBtn.addEventListener("click",() => {
+        if(checkFirstPage == 247){
+            console.log("You'r already on Last page");
+            lastBtn.setAttribute("disabled","true");
+        }else{
+            var deleteDynamicData = document.getElementsByClassName("dynamicData");
+            for(var g=0;g<deleteDynamicData.length;g++){
+                deleteDynamicData[g].innerHTML = "";
+            }
+            getData(247,19);
+        }
+    });
