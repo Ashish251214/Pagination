@@ -62,6 +62,7 @@ getData(1,20);
             for(var g=0;g<deleteDynamicData.length;g++){
                 deleteDynamicData[g].innerHTML = "";
             }
+            numBtn();
             getData(1,20);
         }
     });
@@ -76,8 +77,22 @@ getData(1,20);
             }
             let prevBtn = checkFirstPage-1;
             getData(`${prevBtn}`,20);
+            numBtn();
         }
     });
+    // numberBtn
+    let numBtn = () => {
+        for(let g = 0; g < numberBtn.length; g++){
+            // numberBtn[g].addEventListener("click", () => {});
+            if(g == 0){
+                numberBtn[g].innerHTML = checkFirstPage;
+            }else if(g==1){
+                numberBtn[g].innerHTML = parseInt(checkFirstPage) +1;
+            }else if(g==2){
+                numberBtn[g].innerHTML = parseInt(checkFirstPage)+2;
+            }
+        }
+    }
     // nextBtn
     nextBtn.addEventListener("click", () => {
         if(checkFirstPage == 247){
@@ -92,8 +107,10 @@ getData(1,20);
             console.log(prevBtn , "Increment");
             if(checkFirstPage == 246){
                 getData(`${prevBtn}`,19);
+                numBtn();
             }else{
                 getData(`${prevBtn}`,20);
+                numBtn();
             }
         }
     });
@@ -108,5 +125,7 @@ getData(1,20);
                 deleteDynamicData[g].innerHTML = "";
             }
             getData(247,19);
+            numBtn();
         }
     });
+    numBtn();
